@@ -1,7 +1,12 @@
+import Navbar from "./Navbar";
+
 export default function Home() {
   return (
-    <main>
-      <h1>Kanaban Task Management</h1>
-    </main>
+    <>
+      <Navbar />
+      <main>
+        <h1>Home</h1>
+      </main>
+    </>
   );
 }

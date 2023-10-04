@@ -1,27 +1,27 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
-        'primary': '#635FC7',
-        'primary-light': '#A8A4FF',
-        'danger': '#EA5555',
-        'danger-light': '#FF9898',
-        'black': '#000112',
-        'white': '#FFFFFF',
-        'very-dark-grey': '#20212C',
-        'dark-grey': '#2B2C37',
-        'medium-grey': '#828FA3',
-        'light-grey': '#F4F7FD',
-      }
+        primary: "#635FC7",
+        "primary-hover": "#A8A4FF",
+        danger: "#EA5555",
+        "danger-hover": "#FF9898",
+        black: "#000112",
+        white: "#FFFFFF",
+        "very-dark-grey": "#20212C",
+        "dark-grey": "#2B2C37",
+        "medium-grey": "#828FA3",
+        "light-grey": "#F4F7FD",
+      },
     },
   },
-  plugins: [],
-}
-export default config
+  plugins: [require("@headlessui/tailwindcss")],
+};
+export default config;
