@@ -1,40 +1,59 @@
-import { ReactNode, createContext, useContext, useEffect } from "react";
-import useLocalStorageState from "../hooks/useLocalStorageState";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-const THEMES = {
-  light: "light",
-  dark: "dark",
+enum THEMES {
+  light = "light",
+  dark = "dark",
+}
+
+type ThemeContextType = {
+  theme: string | undefined;
+  toggleTheme: () => void;
 };
 
-const ThemeContext = createContext({
+const STORAGE_KEY = "theme";
+
+const ThemeContext = createContext<ThemeContextType>({
   theme: THEMES.light,
   toggleTheme: () => {},
 });
 
 function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useLocalStorageState(
-    "theme",
-    (function (): string {
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
-        return THEMES.dark;
-      }
-      return THEMES.light;
-    })(),
-  );
+  const [theme, setTheme] = useState<string>();
+
+  useEffect(() => {
+    const persistedTheme = localStorage.getItem(STORAGE_KEY);
+    if (persistedTheme) {
+      setTheme(persistedTheme);
+    } else if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      setTheme(THEMES.dark);
+    } else {
+      setTheme(THEMES.light);
+    }
+  }, []);
 
   useEffect(() => {
     if (theme === THEMES.dark) {
-      document.body.classList.add("dark");
+      document.body.classList.add(THEMES.dark);
+      localStorage.setItem(STORAGE_KEY, THEMES.dark);
+    } else if (theme === THEMES.light) {
+      document.body.classList.remove(THEMES.dark);
+      localStorage.setItem(STORAGE_KEY, THEMES.light);
     } else {
-      document.body.classList.remove("dark");
+      return;
     }
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    setTheme(theme === THEMES.light ? THEMES.dark : THEMES.light);
   };
 
   return (
@@ -48,4 +67,4 @@ function useTheme() {
   return useContext(ThemeContext);
 }
 
-export { ThemeProvider as default, useTheme, THEMES };
+export { THEMES, ThemeProvider as default, useTheme };

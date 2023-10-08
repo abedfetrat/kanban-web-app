@@ -1,7 +1,6 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import Head from "next/head";
+import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -17,10 +16,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Head>
-        <style color="orange"></style>
-      </Head>
-      <body className={jakarta.className}>{children}</body>
+      <body className={jakarta.className} suppressHydrationWarning>
+        <script
+          id="noflash"
+          dangerouslySetInnerHTML={{
+            __html: `
+            const persistedTheme = localStorage.getItem("theme");
+            if (
+              persistedTheme === "dark" ||
+              (!persistedTheme &&
+                window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+              document.body.classList.add("dark");
+            }
+            `,
+          }}
+        ></script>
+        {children}
+      </body>
     </html>
   );
 }
