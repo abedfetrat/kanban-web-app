@@ -1,3 +1,5 @@
+"use client";
+
 type ButtonType = React.ComponentPropsWithoutRef<"button"> & {
   color: "primary" | "secondary" | "danger";
   size: "small" | "large" | "variable";
@@ -8,6 +10,7 @@ export default function Button({
   color,
   size,
   children,
+  ...props
 }: ButtonType) {
   const colorVariants = {
     primary: "bg-primary hover:bg-primary-hover ",
@@ -25,6 +28,7 @@ export default function Button({
   return (
     <button
       className={`${colorVariants[color]} ${sizeVariants[size]} rounded-full font-bold leading-none text-white transition-colors ${className}`}
+      {...props}
     >
       {children}
     </button>

@@ -1,15 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import Boards from "./components/Boards";
 import ThemeToggle from "./components/ThemeToggle";
+import { useSidebarToggleState } from "./providers/SidebarToggleStateProvider";
 import { THEMES, useTheme } from "./providers/ThemeProvider";
 
-type SidebarProps = {
-  showSidebar: boolean;
-  toggleSidebar: () => void;
-};
-
-export default function Sidebar({ showSidebar, toggleSidebar }: SidebarProps) {
+export default function Sidebar() {
   const { theme, toggleTheme } = useTheme();
+  const { showSidebar, toggleSidebar } = useSidebarToggleState();
 
   return showSidebar ? (
     <aside className="hidden h-screen w-[262px] flex-col border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:flex desktop:w-[300px]">
