@@ -39,7 +39,7 @@ export default function Navbar({ showSidebar }: NavbarProps) {
           Platform Launch
         </h1>
         <div className="flex flex-grow items-center justify-end gap-x-4">
-          <Button color="primary">
+          <Button size="variable" color="primary">
             <Image
               src="/images/icon-add-task-mobile.svg"
               width={12}
@@ -47,9 +47,7 @@ export default function Navbar({ showSidebar }: NavbarProps) {
               alt=""
               className="min-w-[12px] md:hidden"
             />
-            <span className="hidden font-bold text-white md:inline">
-              + Add New Task
-            </span>
+            <span className="hidden md:inline">+ Add New Task</span>
           </Button>
           <BoardOptionsMenu />
         </div>
