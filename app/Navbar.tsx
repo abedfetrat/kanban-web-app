@@ -1,33 +1,26 @@
-"use client";
-
 import Image from "next/image";
 import BoardOptionsMenu from "./BoardOptionsMenu";
 import BoardSelectPopover from "./BoardSelectPopover";
 import Button from "./components/Button";
+import { THEMES, useTheme } from "./providers/ThemeProvider";
 
 type NavbarProps = {
   showSidebar: boolean;
 };
 
 export default function Navbar({ showSidebar }: NavbarProps) {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <header className="flex border-light-border bg-white dark:border-dark-border dark:bg-dark-grey md:border-b-2">
       {!showSidebar && (
         <div className="hidden place-items-center border-r-2 border-light-border px-6 py-4 dark:border-dark-border md:grid desktop:px-8">
-          {/* TODO: use theme state to change logo */}
           <Image
-            src="images/logo-light.svg"
+            src={`images/logo-${theme === THEMES.light ? "dark" : "light"}.svg`}
             width={153}
             height={26}
             alt="kanban logo"
-            className="hidden min-w-[153px] dark:block"
-          />
-          <Image
-            src="images/logo-dark.svg"
-            width={153}
-            height={26}
-            alt="kanban logo"
-            className="min-w-[153px] dark:hidden"
+            className="min-w-[153px]"
           />
         </div>
       )}

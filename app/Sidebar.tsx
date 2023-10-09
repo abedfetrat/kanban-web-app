@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Boards from "./components/Boards";
 import ThemeToggle from "./components/ThemeToggle";
-import { Dispatch, SetStateAction } from "react";
+import { THEMES, useTheme } from "./providers/ThemeProvider";
 
 type SidebarProps = {
   showSidebar: boolean;
@@ -9,23 +9,16 @@ type SidebarProps = {
 };
 
 export default function Sidebar({ showSidebar, toggleSidebar }: SidebarProps) {
+  const { theme, toggleTheme } = useTheme();
+
   return showSidebar ? (
     <aside className="hidden h-screen w-[262px] flex-col border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:flex desktop:w-[300px]">
       <div className="flex h-[88px] items-center pl-6 desktop:h-[96px] desktop:pl-8">
-        {/* TODO: use theme state to change logo */}
         <Image
-          src="images/logo-light.svg"
+          src={`images/logo-${theme === THEMES.light ? "dark" : "light"}.svg`}
           width={153}
           height={26}
           alt="kanban logo"
-          className="hidden dark:block"
-        />
-        <Image
-          src="images/logo-dark.svg"
-          width={153}
-          height={26}
-          alt="kanban logo"
-          className="dark:hidden"
         />
       </div>
       <Boards className="flex-1 overflow-y-auto pb-8 pt-4 desktop:pt-0 " />
