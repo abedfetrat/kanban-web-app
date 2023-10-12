@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Boards from "./components/Boards";
-import ThemeToggle from "./components/ThemeToggle";
-import { useSidebarToggleState } from "./providers/SidebarToggleStateProvider";
-import { THEMES, useTheme } from "./providers/ThemeProvider";
+import Boards from "./Boards";
+import ThemeToggle from "@/components/ThemeToggle";
+import { useSidebarToggleState } from "./SidebarToggleStateProvider";
+import { THEMES, useTheme } from "@/providers/ThemeProvider";
 
 export default function Sidebar() {
   const { theme, toggleTheme } = useTheme();

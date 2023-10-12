@@ -2,8 +2,8 @@
 
 import { Popover, Transition } from "@headlessui/react";
 import Image from "next/image";
-import Boards from "./components/Boards";
-import ThemeToggle from "./components/ThemeToggle";
+import Boards from "./Boards";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function BoardSelectPopover(
   props: React.ComponentPropsWithoutRef<"div">,

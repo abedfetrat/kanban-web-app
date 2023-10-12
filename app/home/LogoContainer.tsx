@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useSidebarToggleState } from "./providers/SidebarToggleStateProvider";
+import { useSidebarToggleState } from "./SidebarToggleStateProvider";
 
 export default function LogoContainer() {
   const { showSidebar, toggleSidebar } = useSidebarToggleState();
