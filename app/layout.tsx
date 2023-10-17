@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "./providers/ThemeProvider";
+import { AuthProvider } from "./providers/AuthProvider";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -34,7 +35,9 @@ export default function RootLayout({
             `,
           }}
         ></script>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

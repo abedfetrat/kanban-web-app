@@ -5,6 +5,7 @@ import Boards from "./Boards";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useSidebarToggleState } from "./SidebarToggleStateProvider";
 import { THEMES, useTheme } from "@/providers/ThemeProvider";
+import { logOut } from "../../firebase/auth";
 
 export default function Sidebar() {
   const { theme, toggleTheme } = useTheme();
@@ -24,7 +25,10 @@ export default function Sidebar() {
       <div className="px-6">
         <ThemeToggle />
       </div>
-      <div className="pr-6 pt-4">
+      <button className="p-4 pr-6 font-bold text-medium-grey" onClick={logOut}>
+        Log out
+      </button>
+      <div className="pr-6">
         <button
           onClick={toggleSidebar}
           className="flex w-full items-center gap-x-3 rounded-r-full py-4 pl-6 font-bold text-medium-grey transition-colors hocus:bg-primary/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"

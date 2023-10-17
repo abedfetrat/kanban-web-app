@@ -1,4 +1,8 @@
+"use client";
+
+import { useAuth } from "@/providers/AuthProvider";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default function LoginLayout({
@@ -6,6 +10,14 @@ export default function LoginLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { user, loading, error } = useAuth();
+
+  if (loading) return null;
+
+  if (user) {
+    redirect("/");
+  }
+
   return (
     <main className="grid h-screen place-items-center p-4 md:p-6">
       <section className="w-full max-w-[507px] rounded-xl bg-white px-4 py-12 dark:bg-dark-grey md:px-6 md:py-16">
