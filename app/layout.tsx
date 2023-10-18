@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "./providers/ThemeProvider";
 import { AuthProvider } from "./providers/AuthProvider";
+import { Toaster } from "react-hot-toast";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -36,7 +37,24 @@ export default function RootLayout({
           }}
         ></script>
         <ThemeProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <Toaster
+              position="bottom-center"
+              toastOptions={{
+                error: {
+                  style: {
+                    background: "#EA5555",
+                    color: "#FFFFFF",
+                  },
+                  iconTheme: {
+                    primary: "#FFFFFF",
+                    secondary: "#EA5555",
+                  },
+                },
+              }}
+            />
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

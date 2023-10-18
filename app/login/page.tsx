@@ -2,7 +2,12 @@
 
 import Button from "@/components/Button";
 import Link from "next/link";
-import { logInAnonymously, logInWithGithHub, logInWithGoogle } from "../../firebase/auth";
+import {
+  logInAnonymously,
+  logInWithGithHub,
+  logInWithGoogle,
+} from "../../firebase/auth";
+import { toast } from "react-hot-toast";
 
 export default function Login() {
   const handleGoogleLogIn = async () => {
@@ -10,7 +15,7 @@ export default function Login() {
       await logInWithGoogle();
     } catch (error) {
       console.log(error);
-      // Show error in UI
+      toast.error("Error while logging in. Please try again.");
     }
   };
 
@@ -19,7 +24,7 @@ export default function Login() {
       await logInWithGithHub();
     } catch (error) {
       console.log(error);
-      // Show error in UI
+      toast.error("Error while logging in. Please try again.");
     }
   };
 
@@ -28,13 +33,13 @@ export default function Login() {
       await logInAnonymously();
     } catch (error) {
       console.log(error);
-      // Show error in UI
+      toast.error("Error while logging in. Please try again.");
     }
   };
 
-
   return (
     <>
+      <h2 className="mb-4 text-2xl font-bold">Login</h2>
       <p className="mb-6 font-bold text-medium-grey md:mb-8">
         Log in to sync your boards and tasks accross your devices.
       </p>
@@ -65,7 +70,12 @@ export default function Login() {
           <span className="text-medium-grey">or</span>
           <span className="h-[2px] w-full bg-light-border dark:bg-dark-border"></span>
         </div>
-        <Button color="secondary" size="large" className="w-full" onClick={handleGuestLogIn}>
+        <Button
+          color="secondary"
+          size="large"
+          className="w-full"
+          onClick={handleGuestLogIn}
+        >
           Continue as Guest
         </Button>
       </div>
