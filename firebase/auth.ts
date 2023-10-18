@@ -40,7 +40,7 @@ export function logOut() {
 
 export function sendLogInLinkToEmail(email: string) {
   const actionCodeSettings = {
-    url: "https://abedfetrat.github.io/kanban-web-app/email",
+    url: process.env.NEXT_PUBLIC_APP_DOMAIN_URL + "/login/email",
     handleCodeInApp: true,
   };
   return sendSignInLinkToEmail(auth, email, actionCodeSettings);
