@@ -20,7 +20,7 @@ export default function LoginLayout({
 
   return (
     <main className="grid h-screen place-items-center p-4 md:p-6">
-      <section className="w-full max-w-[507px] rounded-xl bg-white px-4 py-12 dark:bg-dark-grey md:px-6 md:py-16">
+      <section className="w-full max-w-[507px] min-h-[578px] md:min-h-[622px] rounded-xl bg-white px-4 py-12 dark:bg-dark-grey md:px-6 md:py-16">
         <div className="mb-12 flex justify-center md:mb-16">
           <Image
             src="/images/logo-dark.svg"
