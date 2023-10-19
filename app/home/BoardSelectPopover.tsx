@@ -1,9 +1,11 @@
 "use client";
 
+import ThemeToggle from "@/components/ThemeToggle";
 import { Popover, Transition } from "@headlessui/react";
 import Image from "next/image";
+import { logOut } from "../../firebase/auth";
 import Boards from "./Boards";
-import ThemeToggle from "@/components/ThemeToggle";
+import LogOutIcon from "./LogOutIcon";
 
 export default function BoardSelectPopover(
   props: React.ComponentPropsWithoutRef<"div">,
@@ -31,8 +33,14 @@ export default function BoardSelectPopover(
       >
         <Popover.Panel className="absolute top-[calc(100%+2.5rem)] z-10 w-max min-w-[264px] rounded-lg bg-white font-bold text-medium-grey dark:bg-dark-grey">
           <Boards />
-          <div className="p-4">
+          <div className="p-4 pb-0">
             <ThemeToggle />
+          </div>
+          <div className="px-4 py-6">
+            <button onClick={logOut} className="flex items-center gap-x-3">
+              <LogOutIcon />
+              Log out
+            </button>
           </div>
         </Popover.Panel>
       </Transition>

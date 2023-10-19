@@ -1,11 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import Boards from "./Boards";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useSidebarToggleState } from "./SidebarToggleStateProvider";
 import { THEMES, useTheme } from "@/providers/ThemeProvider";
+import Image from "next/image";
 import { logOut } from "../../firebase/auth";
+import Boards from "./Boards";
+import LogOutIcon from "./LogOutIcon";
+import { useSidebarToggleState } from "./SidebarToggleStateProvider";
 
 export default function Sidebar() {
   const { theme, toggleTheme } = useTheme();
@@ -25,10 +26,14 @@ export default function Sidebar() {
       <div className="px-6">
         <ThemeToggle />
       </div>
-      <button className="p-4 pr-6 font-bold text-medium-grey" onClick={logOut}>
-        Log out
-      </button>
-      <div className="pr-6">
+      <div className="mt-6 pr-6">
+        <button
+          onClick={logOut}
+          className="flex w-full items-center gap-x-3 rounded-r-full py-4 pl-6 font-bold text-medium-grey transition-colors hocus:bg-primary/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
+        >
+          <LogOutIcon />
+          Log out
+        </button>
         <button
           onClick={toggleSidebar}
           className="flex w-full items-center gap-x-3 rounded-r-full py-4 pl-6 font-bold text-medium-grey transition-colors hocus:bg-primary/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
