@@ -1,32 +1,43 @@
-import { HTMLAttributes } from "react";
+import { ComponentPropsWithoutRef, HTMLAttributes } from "react";
 
-export default function Boards(props: HTMLAttributes<HTMLDivElement>) {
+type BoardsType = ComponentPropsWithoutRef<"div"> & {
+  onShowAddBoardModal: () => void;
+};
+
+export default function Boards({
+  onShowAddBoardModal,
+  className,
+  ...props
+}: BoardsType) {
   return (
-    <div className={`font-bold text-medium-grey ${props.className}`}>
+    <div className={`font-bold text-medium-grey ${className}`} {...props}>
       <div className="px-6 py-4 text-sm uppercase tracking-[2.4px]">
         All Boards (3)
       </div>
       <ul className="pr-6">
         <li>
-          <button className="dark:hocus:bg-white dark:hocus:text-primary hocus:bg-primary-hover/10 hocus:text-primary flex w-full items-center gap-x-4 rounded-r-full bg-primary px-6 py-4 font-bold text-white transition-colors">
+          <button className="flex w-full items-center gap-x-4 rounded-r-full bg-primary px-6 py-4 font-bold text-white transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary">
             <BoardIcon />
             <span className="truncate">Platform Launch</span>
           </button>
         </li>
         <li>
-          <button className="dark:hocus:bg-white dark:hocus:text-primary hocus:bg-primary-hover/10 hocus:text-primary flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold transition-colors">
+          <button className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary">
             <BoardIcon />
             <span className="truncate">Marketing Plan</span>
           </button>
         </li>
         <li>
-          <button className="dark:hocus:bg-white dark:hocus:text-primary hocus:bg-primary-hover/10 hocus:text-primary flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold transition-colors">
+          <button className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary">
             <BoardIcon />
             <span className="truncate">Roadmap</span>
           </button>
         </li>
         <li>
-          <button className="dark:hocus:bg-white dark:hocus:text-primary hocus:bg-primary-hover/10 hocus:text-primary flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold text-primary transition-colors">
+          <button
+            className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold text-primary transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
+            onClick={onShowAddBoardModal}
+          >
             <BoardIcon />
             <span>+ Create New Board</span>
           </button>

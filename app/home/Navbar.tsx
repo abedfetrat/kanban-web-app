@@ -4,7 +4,11 @@ import BoardOptionsMenu from "./BoardOptionsMenu";
 import BoardSelectPopover from "./BoardSelectPopover";
 import LogoContainer from "./LogoContainer";
 
-export default function Navbar() {
+export default function Navbar({
+  onShowAddBoardModal,
+}: {
+  onShowAddBoardModal: () => void;
+}) {
   return (
     <header className="flex border-light-border bg-white dark:border-dark-border dark:bg-dark-grey md:border-b-2">
       <LogoContainer />
@@ -18,7 +22,7 @@ export default function Navbar() {
             className="min-w-[24px]"
           />
         </div>
-        <BoardSelectPopover className="md:hidden" />
+        <BoardSelectPopover className="md:hidden" onShowAddBoardModal={onShowAddBoardModal} />
         <h1 className="hidden text-xl font-bold md:block desktop:text-2xl">
           Platform Launch
         </h1>

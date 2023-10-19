@@ -8,7 +8,11 @@ import Boards from "./Boards";
 import LogOutIcon from "./LogOutIcon";
 import { useSidebarToggleState } from "./SidebarToggleStateProvider";
 
-export default function Sidebar() {
+export default function Sidebar({
+  onShowAddBoardModal,
+}: {
+  onShowAddBoardModal: () => void;
+}) {
   const { theme, toggleTheme } = useTheme();
   const { showSidebar, toggleSidebar } = useSidebarToggleState();
 
@@ -22,7 +26,7 @@ export default function Sidebar() {
           alt="kanban logo"
         />
       </div>
-      <Boards className="flex-1 overflow-y-auto pb-8 pt-4 desktop:pt-0 " />
+      <Boards className="flex-1 overflow-y-auto pb-8 pt-4 desktop:pt-0" onShowAddBoardModal={onShowAddBoardModal} />
       <div className="px-6">
         <ThemeToggle />
       </div>

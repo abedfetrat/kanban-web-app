@@ -1,5 +1,6 @@
 "use client";
 
+import { ComponentPropsWithoutRef } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Popover, Transition } from "@headlessui/react";
 import Image from "next/image";
@@ -7,9 +8,14 @@ import { logOut } from "../../firebase/auth";
 import Boards from "./Boards";
 import LogOutIcon from "./LogOutIcon";
 
-export default function BoardSelectPopover(
-  props: React.ComponentPropsWithoutRef<"div">,
-) {
+type BoardSelectPopoverType = ComponentPropsWithoutRef<"div"> & {
+  onShowAddBoardModal: () => void;
+};
+
+export default function BoardSelectPopover({
+  onShowAddBoardModal,
+  ...props
+}: BoardSelectPopoverType) {
   return (
     <Popover className="relative" {...props}>
       <Popover.Button className="flex items-center gap-x-3 text-lg font-bold leading-tight">
@@ -32,7 +38,7 @@ export default function BoardSelectPopover(
         leaveTo="transform scale-95 opacity-0"
       >
         <Popover.Panel className="absolute top-[calc(100%+2.5rem)] z-10 w-max min-w-[264px] rounded-lg bg-white font-bold text-medium-grey dark:bg-dark-grey">
-          <Boards />
+          <Boards onShowAddBoardModal={onShowAddBoardModal} />
           <div className="p-4 pb-0">
             <ThemeToggle />
           </div>
