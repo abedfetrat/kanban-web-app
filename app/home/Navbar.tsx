@@ -6,8 +6,10 @@ import LogoContainer from "./LogoContainer";
 
 export default function Navbar({
   onShowAddBoardModal,
+  onShowEditBoardModal,
 }: {
   onShowAddBoardModal: () => void;
+  onShowEditBoardModal: () => void;
 }) {
   return (
     <header className="flex border-light-border bg-white dark:border-dark-border dark:bg-dark-grey md:border-b-2">
@@ -28,7 +30,7 @@ export default function Navbar({
         </h1>
         <div className="flex flex-grow items-center justify-end gap-x-4">
           <AddTaskButton />
-          <BoardOptionsMenu />
+          <BoardOptionsMenu onShowEditBoardModal={onShowEditBoardModal}/>
         </div>
       </div>
     </header>

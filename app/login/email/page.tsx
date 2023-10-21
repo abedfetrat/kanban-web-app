@@ -7,7 +7,6 @@ import {
 } from "@/../firebase/auth";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { Transition } from "@headlessui/react";
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -73,29 +72,17 @@ export default function Page() {
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input
-              className="mb-2 w-full"
+              wrapperClassName="mb-2"
+              className="w-full"
               placeholder="Email address"
               {...register("email", {
                 required: true,
                 pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               })}
-              error={!!errors?.email}
+              error={errors?.email && "Please enter an email address."}
             />
-            <Transition
-              show={!!errors?.email}
-              enter="transition-opacity duration-150"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="transition-opacity duration-150"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              as="p"
-              className="mb-2 text-sm font-bold text-danger"
-            >
-              Please enter an email address.
-            </Transition>
             <Button
-              className="mb-12 mt-2 w-full"
+              className="mb-8 mt-2 w-full"
               color="primary"
               size="large"
               type="submit"
