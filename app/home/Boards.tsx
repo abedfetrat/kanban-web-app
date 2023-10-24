@@ -1,4 +1,7 @@
-import { ComponentPropsWithoutRef, HTMLAttributes } from "react";
+import { ComponentPropsWithoutRef } from "react";
+import { Board } from "../../firebase/db";
+import { useBoards } from "./providers/BoardsProvider";
+import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
 type BoardsType = ComponentPropsWithoutRef<"div"> & {
   onShowAddBoardModal: () => void;
@@ -9,30 +12,23 @@ export default function Boards({
   className,
   ...props
 }: BoardsType) {
+  const { boards, loading, error } = useBoards();
+  const { selectedBoard, selectBoard } = useSelectedBoard();
+
   return (
     <div className={`font-bold text-medium-grey ${className}`} {...props}>
       <div className="px-6 py-4 text-sm uppercase tracking-[2.4px]">
-        All Boards (3)
+        All Boards ({boards.length})
       </div>
       <ul className="pr-6">
-        <li>
-          <button className="flex w-full items-center gap-x-4 rounded-r-full bg-primary px-6 py-4 font-bold text-white transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary">
-            <BoardIcon />
-            <span className="truncate">Platform Launch</span>
-          </button>
-        </li>
-        <li>
-          <button className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary">
-            <BoardIcon />
-            <span className="truncate">Marketing Plan</span>
-          </button>
-        </li>
-        <li>
-          <button className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary">
-            <BoardIcon />
-            <span className="truncate">Roadmap</span>
-          </button>
-        </li>
+        {boards.map((board: Board) => (
+          <BoardItem
+            key={board.id}
+            board={board}
+            selected={selectedBoard?.id === board.id}
+            onClick={() => selectBoard(board)}
+          />
+        ))}
         <li>
           <button
             className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold text-primary transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
@@ -55,3 +51,28 @@ const BoardIcon = () => (
     />
   </svg>
 );
+
+const BoardItem = ({
+  board,
+  selected,
+  onClick,
+}: {
+  board: Board;
+  selected: boolean;
+  onClick: () => void;
+}) => {
+  const variant = selected
+    ? "bg-primary text-white"
+    : "hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary";
+  return (
+    <li>
+      <button
+        className={`${variant} flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold transition-colors`}
+        onClick={onClick}
+      >
+        <BoardIcon />
+        <span className="truncate">{board.name}</span>
+      </button>
+    </li>
+  );
+};

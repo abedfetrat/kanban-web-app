@@ -3,6 +3,7 @@ import AddTaskButton from "./AddTaskButton";
 import BoardOptionsMenu from "./BoardOptionsMenu";
 import BoardSelectPopover from "./BoardSelectPopover";
 import LogoContainer from "./LogoContainer";
+import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
 export default function Navbar({
   onShowAddBoardModal,
@@ -11,6 +12,8 @@ export default function Navbar({
   onShowAddBoardModal: () => void;
   onShowEditBoardModal: () => void;
 }) {
+  const {selectedBoard} = useSelectedBoard();
+
   return (
     <header className="flex border-light-border bg-white dark:border-dark-border dark:bg-dark-grey md:border-b-2">
       <LogoContainer />
@@ -26,7 +29,7 @@ export default function Navbar({
         </div>
         <BoardSelectPopover className="md:hidden" onShowAddBoardModal={onShowAddBoardModal} />
         <h1 className="hidden text-xl font-bold md:block desktop:text-2xl">
-          Platform Launch
+          {selectedBoard ? selectedBoard.name : ""}
         </h1>
         <div className="flex flex-grow items-center justify-end gap-x-4">
           <AddTaskButton />

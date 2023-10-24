@@ -2,6 +2,8 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Image from "next/image";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { createNewBoard } from "@/../firebase/db";
 import Modal from "./Modal";
 
 enum MODES {
@@ -46,11 +48,17 @@ export default function AddEditBoardModal({
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (mode === MODES.add) {
-      // add data to databse
-      console.log("add to db", data);
+      try {
+        createNewBoard(
+          data.boardName,
+          data.boardColumns.map((col) => col.columnName),
+        );
+      } catch (error) {
+        console.log(error);
+        toast.error("Error creating new board.");
+      }
     } else {
-      // edit
-      console.log("edit to db", data);
+     // TODO: Edit board
     }
     reset();
     onClose();

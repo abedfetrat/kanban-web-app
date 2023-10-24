@@ -7,6 +7,7 @@ import Image from "next/image";
 import { logOut } from "../../firebase/auth";
 import Boards from "./Boards";
 import LogOutIcon from "./LogOutIcon";
+import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
 type BoardSelectPopoverType = ComponentPropsWithoutRef<"div"> & {
   onShowAddBoardModal: () => void;
@@ -16,10 +17,12 @@ export default function BoardSelectPopover({
   onShowAddBoardModal,
   ...props
 }: BoardSelectPopoverType) {
+  const {selectedBoard} = useSelectedBoard();
+
   return (
     <Popover className="relative" {...props}>
       <Popover.Button className="flex items-center gap-x-3 text-lg font-bold leading-tight">
-        <span className="truncate">Platform Launch</span>
+        <span className="truncate">{selectedBoard ? selectedBoard.name : "Select board"}</span>
         <Image
           className="ui-open:rotate-180 ui-open:transform"
           src="images/icon-chevron-down.svg"
