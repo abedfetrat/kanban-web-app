@@ -10,7 +10,7 @@ import { useBoards } from "./BoardsProvider";
 
 type SelectedBoardContextType = {
   selectedBoard: Board | null;
-  selectBoard: (board: Board | null) => void;
+  selectBoard: (id: string) => void;
 };
 
 const SelectedBoardContext = createContext<SelectedBoardContextType>({
@@ -25,15 +25,19 @@ export default function SelectedBoardProvider({
 }) {
   const { boards } = useBoards();
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
+  const [selectedBoardId, setSelectedBoardId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!selectedBoard) {
+    const board = boards.find((b) => b.id === selectedBoardId);
+    if (board) {
+      setSelectedBoard(board);
+    } else {
       setSelectedBoard(boards[0]);
     }
-  }, [boards]);
+  }, [selectedBoardId, boards]);
 
-  const selectBoard = (board: Board | null) => {
-    setSelectedBoard(board);
+  const selectBoard = (id: string) => {
+    setSelectedBoardId(id);
   };
 
   return (

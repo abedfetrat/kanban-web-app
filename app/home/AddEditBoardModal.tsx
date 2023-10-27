@@ -1,44 +1,46 @@
+import { createNewBoard, editBoard } from "@/../firebase/db";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Image from "next/image";
+import { useEffect } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { createNewBoard } from "@/../firebase/db";
 import Modal from "./Modal";
-
-enum MODES {
-  add = "add",
-  edit = "edit",
-}
+import { useColumns } from "./providers/ColumnsProvider";
+import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
 type AddEditBoardModalType = {
+  mode: "add" | "edit";
   isOpen: boolean;
   onClose: () => void;
-  mode: keyof typeof MODES;
 };
 
 type Inputs = {
   boardName: string;
   boardColumns: {
     columnName: string;
+    columnId: string;
   }[];
 };
 
 export default function AddEditBoardModal({
+  mode,
   isOpen,
   onClose,
-  mode,
 }: AddEditBoardModalType) {
+  const { selectedBoard, selectBoard } = useSelectedBoard();
+  const { columns } = useColumns();
+
   const {
     control,
     register,
-    handleSubmit,
     reset,
+    handleSubmit,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
       boardName: "",
-      boardColumns: [{ columnName: "" }],
+      boardColumns: [{ columnName: "", columnId: "" }],
     },
   });
   const { fields, append, remove } = useFieldArray({
@@ -46,21 +48,55 @@ export default function AddEditBoardModal({
     control,
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (mode === MODES.add) {
-      try {
-        createNewBoard(
-          data.boardName,
-          data.boardColumns.map((col) => col.columnName),
-        );
-      } catch (error) {
-        console.log(error);
-        toast.error("Error creating new board.");
+  useEffect(() => {
+    if (mode === "edit" && selectedBoard) {
+      if (columns) {
+        reset({
+          boardName: selectedBoard.name,
+          boardColumns: columns.map((col) => ({
+            columnId: col.id,
+            columnName: col.name,
+          })),
+        });
+      } else {
+        reset({ boardName: selectedBoard.name });
       }
-    } else {
-     // TODO: Edit board
     }
-    reset();
+  }, [mode, selectedBoard, columns, reset]);
+
+  const handleAdd = async (data: Inputs) => {
+    try {
+      const boardId = await createNewBoard(
+        data.boardName.trim(),
+        data.boardColumns.map((col) => col.columnName.trim()),
+      );
+      selectBoard(boardId);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error creating new board.");
+    }
+  };
+
+  const handleEdit = (data: Inputs) => {
+    try {
+      const newColumns = data.boardColumns.map((col) => ({
+        id: col.columnId,
+        name: col.columnName.trim(),
+      }));
+      editBoard(selectedBoard!, data.boardName.trim(), newColumns, columns);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error editing board.");
+    }
+  };
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (mode === "add") {
+      handleAdd(data);
+      reset();
+    } else {
+      handleEdit(data);
+    }
     onClose();
   };
 
@@ -68,14 +104,17 @@ export default function AddEditBoardModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={mode === MODES.add ? "Add New Board" : "Edit Board"}
+      title={mode === "add" ? "Add New Board" : "Edit Board"}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           placeholder="e.g. Web Design"
           label="Board Name"
-          error={errors?.boardName?.message}
-          {...register("boardName", { required: "Please enter a board name." })}
+          error={errors?.boardName && "Please enter a board name."}
+          {...register("boardName", {
+            required: true,
+            pattern: /^\s*.*\S.*\s*$/,
+          })}
         />
         <div className="mb-6 mt-4">
           <p className="mb-2 text-sm font-bold md:text-base">Board Columns</p>
@@ -87,9 +126,13 @@ export default function AddEditBoardModal({
                     placeholder="Column Name"
                     wrapperClassName="w-full"
                     className="w-full"
-                    error={errors?.boardColumns?.[index]?.columnName?.message}
+                    error={
+                      errors?.boardColumns?.[index]?.columnName &&
+                      "Please enter a column name."
+                    }
                     {...register(`boardColumns.${index}.columnName` as const, {
-                      required: "Please enter a column name.",
+                      required: true,
+                      pattern: /^\s*.*\S.*\s*$/,
                     })}
                   />
                   <button
@@ -113,13 +156,13 @@ export default function AddEditBoardModal({
             color="secondary"
             size="large"
             className="w-full"
-            onClick={() => append({ columnName: "" })}
+            onClick={() => append({ columnName: "", columnId: "" })}
           >
             + Add New Column
           </Button>
         </div>
         <Button type="submit" color="primary" size="large" className="w-full">
-          {mode === MODES.add ? "Create New Board" : "Save Changes"}
+          {mode === "add" ? "Create New Board" : "Save Changes"}
         </Button>
       </form>
     </Modal>

@@ -5,14 +5,18 @@ import BoardSelectPopover from "./BoardSelectPopover";
 import LogoContainer from "./LogoContainer";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
+type NavbarProps = {
+  onShowAddBoardModal: () => void;
+  onShowEditBoardModal: () => void;
+  onShowDeleteBoardModal: () => void;
+};
+
 export default function Navbar({
   onShowAddBoardModal,
   onShowEditBoardModal,
-}: {
-  onShowAddBoardModal: () => void;
-  onShowEditBoardModal: () => void;
-}) {
-  const {selectedBoard} = useSelectedBoard();
+  onShowDeleteBoardModal,
+}: NavbarProps) {
+  const { selectedBoard } = useSelectedBoard();
 
   return (
     <header className="flex border-light-border bg-white dark:border-dark-border dark:bg-dark-grey md:border-b-2">
@@ -27,13 +31,19 @@ export default function Navbar({
             className="min-w-[24px]"
           />
         </div>
-        <BoardSelectPopover className="md:hidden" onShowAddBoardModal={onShowAddBoardModal} />
+        <BoardSelectPopover
+          className="md:hidden"
+          onShowAddBoardModal={onShowAddBoardModal}
+        />
         <h1 className="hidden text-xl font-bold md:block desktop:text-2xl">
           {selectedBoard ? selectedBoard.name : ""}
         </h1>
         <div className="flex flex-grow items-center justify-end gap-x-4">
           <AddTaskButton />
-          <BoardOptionsMenu onShowEditBoardModal={onShowEditBoardModal}/>
+          <BoardOptionsMenu
+            onShowEditBoardModal={onShowEditBoardModal}
+            onShowDeleteBoardModal={onShowDeleteBoardModal}
+          />
         </div>
       </div>
     </header>

@@ -26,7 +26,7 @@ export default function Boards({
             key={board.id}
             board={board}
             selected={selectedBoard?.id === board.id}
-            onClick={() => selectBoard(board)}
+            onClick={() => selectBoard(board.id)}
           />
         ))}
         <li>

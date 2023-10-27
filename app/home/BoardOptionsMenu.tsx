@@ -5,8 +5,10 @@ import OptionsMenu from "./OptionsMenu";
 
 export default function BoardOptionsMenu({
   onShowEditBoardModal,
+  onShowDeleteBoardModal,
 }: {
   onShowEditBoardModal: () => void;
+  onShowDeleteBoardModal: () => void;
 }) {
   return (
     <OptionsMenu>
@@ -16,7 +18,12 @@ export default function BoardOptionsMenu({
         </button>
       </Menu.Item>
       <Menu.Item>
-        <button className="w-full text-start text-danger">Delete Board</button>
+        <button
+          className="w-full text-start text-danger"
+          onClick={onShowDeleteBoardModal}
+        >
+          Delete Board
+        </button>
       </Menu.Item>
     </OptionsMenu>
   );
