@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu } from "@headlessui/react";
-import OptionsMenu from "./OptionsMenu";
+import OptionsMenu from "../components/OptionsMenu";
 
 export default function BoardOptionsMenu({
   onShowEditBoardModal,

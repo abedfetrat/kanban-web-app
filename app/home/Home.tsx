@@ -1,13 +1,13 @@
-import Button from "@/components/Button";
 import { useState } from "react";
 import AddEditBoardModal from "./AddEditBoardModal";
-import Navbar from "./Navbar";
+import DeleteBoardModal from "./DeleteBoardModal";
+import Main from "./Main";
 import Sidebar from "./Sidebar";
-import SidebarToggleStateProvider from "./SidebarToggleStateProvider";
+import Navbar from "./navbar/Navbar";
 import BoardsProvider from "./providers/BoardsProvider";
 import ColumnsProvider from "./providers/ColumnsProvider";
 import SelectedBoardProvider from "./providers/SelectedBoardProvider";
-import DeleteBoardModal from "./DeleteBoardModal";
+import SidebarToggleStateProvider from "./providers/SidebarToggleStateProvider";
 
 export default function Home() {
   const [shouldShowAddBoardModal, setShouldShowAddBoardModal] = useState(false);
@@ -65,16 +65,7 @@ export default function Home() {
                   onShowEditBoardModal={handleShowEditBoardModal}
                   onShowDeleteBoardModal={handleShowDeleteBoardModal}
                 />
-                <main className="grid flex-1 place-items-center px-4 pt-6 md:px-6">
-                  <section className="text-center">
-                    <p className="text-lg font-bold text-medium-grey">
-                      This board is empty. Create a new column to get started.
-                    </p>
-                    <Button size="large" className="mt-6" color="primary">
-                      + Add New Column
-                    </Button>
-                  </section>
-                </main>
+                <Main />
               </div>
             </div>
           </ColumnsProvider>

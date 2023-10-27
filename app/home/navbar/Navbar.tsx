@@ -3,7 +3,7 @@ import AddTaskButton from "./AddTaskButton";
 import BoardOptionsMenu from "./BoardOptionsMenu";
 import BoardSelectPopover from "./BoardSelectPopover";
 import LogoContainer from "./LogoContainer";
-import { useSelectedBoard } from "./providers/SelectedBoardProvider";
+import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 
 type NavbarProps = {
   onShowAddBoardModal: () => void;

@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import { Dialog } from "@headlessui/react";
 import toast from "react-hot-toast";
 import { deleteBoard } from "../../firebase/db";
-import Modal from "./Modal";
+import Modal from "./components/Modal";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
 export default function DeleteBoardModal({

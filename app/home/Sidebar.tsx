@@ -4,9 +4,9 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { THEMES, useTheme } from "@/providers/ThemeProvider";
 import Image from "next/image";
 import { logOut } from "../../firebase/auth";
-import Boards from "./Boards";
-import LogOutIcon from "./LogOutIcon";
-import { useSidebarToggleState } from "./SidebarToggleStateProvider";
+import Boards from "./components/Boards";
+import LogOutIcon from "./components/LogOutIcon";
+import { useSidebarToggleState } from "./providers/SidebarToggleStateProvider";
 
 export default function Sidebar({
   onShowAddBoardModal,

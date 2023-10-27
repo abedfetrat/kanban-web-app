@@ -1,5 +1,5 @@
 import React from "react";
-import OptionsMenu from "./OptionsMenu";
+import OptionsMenu from "./components/OptionsMenu";
 import { Menu } from "@headlessui/react";
 
 /* TODO: add click handlers */

@@ -4,10 +4,10 @@ import { ComponentPropsWithoutRef } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Popover, Transition } from "@headlessui/react";
 import Image from "next/image";
-import { logOut } from "../../firebase/auth";
-import Boards from "./Boards";
-import LogOutIcon from "./LogOutIcon";
-import { useSelectedBoard } from "./providers/SelectedBoardProvider";
+import { logOut } from "@/../firebase/auth";
+import Boards from "../components/Boards";
+import LogOutIcon from "../components/LogOutIcon";
+import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 
 type BoardSelectPopoverType = ComponentPropsWithoutRef<"div"> & {
   onShowAddBoardModal: () => void;
