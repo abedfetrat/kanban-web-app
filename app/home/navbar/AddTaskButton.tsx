@@ -3,11 +3,12 @@
 import Button from "@/components/Button";
 import Image from "next/image";
 
-export default function AddTaskButton() {
+export default function AddTaskButton({ disabled }: { disabled: boolean }) {
   return (
     <Button
       size="variable"
       color="primary"
+      disabled={disabled}
       onClick={() => {
         console.log("Opening new task modal...");
       }}

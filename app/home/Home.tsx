@@ -65,7 +65,10 @@ export default function Home() {
                   onShowEditBoardModal={handleShowEditBoardModal}
                   onShowDeleteBoardModal={handleShowDeleteBoardModal}
                 />
-                <Main />
+                <Main
+                  onShowAddBoardModal={handleShowAddBoardModal}
+                  onShowEditBoardModal={handleShowEditBoardModal}
+                />
               </div>
             </div>
           </ColumnsProvider>

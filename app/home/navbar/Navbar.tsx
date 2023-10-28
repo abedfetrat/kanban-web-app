@@ -36,14 +36,16 @@ export default function Navbar({
           onShowAddBoardModal={onShowAddBoardModal}
         />
         <h1 className="hidden text-xl font-bold md:block desktop:text-2xl">
-          {selectedBoard ? selectedBoard.name : ""}
+          {selectedBoard ? selectedBoard.name : "Select a board"}
         </h1>
         <div className="flex flex-grow items-center justify-end gap-x-4">
-          <AddTaskButton />
-          <BoardOptionsMenu
-            onShowEditBoardModal={onShowEditBoardModal}
-            onShowDeleteBoardModal={onShowDeleteBoardModal}
-          />
+          <AddTaskButton disabled={!selectedBoard} />
+          {selectedBoard && (
+            <BoardOptionsMenu
+              onShowEditBoardModal={onShowEditBoardModal}
+              onShowDeleteBoardModal={onShowDeleteBoardModal}
+            />
+          )}
         </div>
       </div>
     </header>

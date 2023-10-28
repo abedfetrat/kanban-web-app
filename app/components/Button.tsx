@@ -13,10 +13,12 @@ export default function Button({
   ...props
 }: ButtonType) {
   const colorVariants = {
-    primary: "text-white bg-primary hover:bg-primary-hover",
+    primary:
+      "text-white bg-primary hover:bg-primary-hover disabled:hover:bg-primary",
     secondary:
-      "dark:bg-white dark:hover:bg-white/80 text-primary bg-primary/10 hover:bg-primary/25",
-    danger: "text-white bg-danger hover:bg-danger-hover ",
+      "dark:bg-white dark:hover:bg-white/80 text-primary bg-primary/10 hover:bg-primary/25 disabled:hover:bg-primary/10 disabled:dark:hover:bg-white",
+    danger:
+      "text-white bg-danger hover:bg-danger-hover disabled:hover:bg-danger",
   };
 
   const sizeVariants = {
@@ -27,7 +29,7 @@ export default function Button({
 
   return (
     <button
-      className={`${colorVariants[color]} ${sizeVariants[size]} rounded-full font-bold leading-none transition-colors ${className}`}
+      className={`${colorVariants[color]} ${sizeVariants[size]} rounded-full font-bold leading-none transition-colors disabled:opacity-25 ${className}`}
       {...props}
     >
       {children}
