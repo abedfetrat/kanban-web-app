@@ -14,41 +14,43 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
 
-export type Board = {
+export interface Board {
   id: string;
   name: string;
   createdAt?: FieldValue;
-};
+}
 
-export type Column = {
+export interface Column {
   id: string;
   name: string;
   createdAt?: FieldValue;
-};
+}
 
-export type Task = {
+export interface Task {
   id: string;
   name: string;
   createdAt?: FieldValue;
   description: string;
   subtasks: Subtask[];
-};
+}
 
-export type Subtask = {
+export interface Subtask {
   id: string;
   name: string;
   createdAt?: FieldValue;
   completed: boolean;
-};
+}
 
 export function subscribeToBoardsCollection(
   obs: (snapshot: QuerySnapshot) => void,
 ) {
-  const uid = auth.currentUser?.uid;
-  if (!uid) return () => {};
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
 
-  const userRef = doc(db, "users", uid);
-  const boardsRef = collection(db, userRef.path, "boards");
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
   const q = query(boardsRef, orderBy("createdAt", "desc"));
 
   return onSnapshot(q, obs);
@@ -58,26 +60,30 @@ export function subscribeToColumnsCollection(
   boardId: string,
   obs: (snapshot: QuerySnapshot) => void,
 ) {
-  const uid = auth.currentUser?.uid;
-  if (!uid) return () => {};
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
 
-  const userRef = doc(db, "users", uid);
-  const boardsRef = collection(db, userRef.path, "boards");
-  const boardRef = doc(db, boardsRef.path, boardId);
-  const columnsRef = collection(db, boardRef.path, "columns");
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
+  const boardRef = doc(boardsRef, boardId);
+  const columnsRef = collection(boardRef, "columns");
   const q = query(columnsRef, orderBy("createdAt"));
 
   return onSnapshot(q, obs);
 }
 
 export async function getColumnsForBoard(boardId: string) {
-  const uid = auth.currentUser?.uid;
-  if (!uid) return Promise.reject("User ID not found.");
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
 
-  const userRef = doc(db, "users", uid);
-  const boardsRef = collection(db, userRef.path, "boards");
-  const boardRef = doc(db, boardsRef.path, boardId);
-  const columnsRef = collection(db, boardRef.path, "columns");
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
+  const boardRef = doc(boardsRef, boardId);
+  const columnsRef = collection(boardRef, "columns");
 
   const q = query(columnsRef, orderBy("createdAt"));
   const snapshot = await getDocs(q);
@@ -96,15 +102,17 @@ export async function getColumnsForBoard(boardId: string) {
 }
 
 export async function getTasksForColumn(boardId: string, columnId: string) {
-  const uid = auth.currentUser?.uid;
-  if (!uid) return Promise.reject("User ID not found.");
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
 
-  const userRef = doc(db, "users", uid);
-  const boardsRef = collection(db, userRef.path, "boards");
-  const boardRef = doc(db, boardsRef.path, boardId);
-  const columnsRef = collection(db, boardRef.path, "columns");
-  const columnRef = doc(db, columnsRef.path, columnId);
-  const tasksRef = collection(db, columnRef.path, "tasks");
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
+  const boardRef = doc(boardsRef, boardId);
+  const columnsRef = collection(boardRef, "columns");
+  const columnRef = doc(columnsRef, columnId);
+  const tasksRef = collection(columnRef, "tasks");
 
   const q = query(tasksRef);
   const snapshot = await getDocs(q);
@@ -125,11 +133,13 @@ export async function getTasksForColumn(boardId: string, columnId: string) {
 }
 
 export async function createNewBoard(name: string, columns: string[]) {
-  const uid = auth.currentUser?.uid;
-  if (!uid) return Promise.reject("User ID not found.");
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
 
-  const userRef = doc(db, "users", uid);
-  const boardsRef = collection(db, userRef.path, "boards");
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
   const newBoardRef = doc(boardsRef);
 
   await setDoc(newBoardRef, {
@@ -138,7 +148,7 @@ export async function createNewBoard(name: string, columns: string[]) {
     createdAt: serverTimestamp(),
   });
 
-  const columnsRef = collection(db, newBoardRef.path, "columns");
+  const columnsRef = collection(newBoardRef, "columns");
   const batch = writeBatch(db);
   columns.forEach((col) => {
     const columnRef = doc(columnsRef);
@@ -160,17 +170,19 @@ export async function editBoard(
   newColumns: Column[],
   oldColumns: Column[],
 ) {
-  const uid = auth.currentUser?.uid;
-  if (!uid) return Promise.reject("User ID not found.");
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
 
-  const userRef = doc(db, "users", uid);
-  const boardsRef = collection(db, userRef.path, "boards");
-  const boardRef = doc(db, boardsRef.path, board.id);
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
+  const boardRef = doc(boardsRef, board.id);
   // Update board with new name
   if (newName !== board.name) {
     await updateDoc(boardRef, { name: newName });
   }
-  const columnsRef = collection(db, boardRef.path, "columns");
+  const columnsRef = collection(boardRef, "columns");
   const batch = writeBatch(db);
   const { added, updated, deleted } = compareColumns(oldColumns, newColumns);
   // Add all new columns to db
@@ -184,12 +196,12 @@ export async function editBoard(
   });
   // Update db with updated columns
   updated.forEach((col) => {
-    const columnRef = doc(db, columnsRef.path, col.id);
+    const columnRef = doc(columnsRef, col.id);
     batch.update(columnRef, { name: col.name });
   });
   // Delete columns from db
   deleted.forEach((col) => {
-    const columnRef = doc(db, columnsRef.path, col.id);
+    const columnRef = doc(columnsRef, col.id);
     batch.delete(columnRef);
   });
 
@@ -197,23 +209,25 @@ export async function editBoard(
 }
 
 export async function deleteBoard(boardId: string) {
-  const uid = auth.currentUser?.uid;
-  if (!uid) return Promise.reject("User ID not found.");
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
 
-  const userRef = doc(db, "users", uid);
-  const boardsRef = collection(db, userRef.path, "boards");
-  const boardRef = doc(db, boardsRef.path, boardId);
-  const columnsRef = collection(db, boardRef.path, "columns");
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
+  const boardRef = doc(boardsRef, boardId);
+  const columnsRef = collection(boardRef, "columns");
 
   const columns = await getColumnsForBoard(boardId);
   const batch = writeBatch(db);
   // Delete columns and associated tasks from db
   for (const col of columns) {
-    const columnRef = doc(db, columnsRef.path, col.id);
-    const tasksRef = collection(db, columnRef.path, "tasks");
+    const columnRef = doc(columnsRef, col.id);
+    const tasksRef = collection(columnRef, "tasks");
     const tasks = await getTasksForColumn(boardId, col.id);
     for (const task of tasks) {
-      const taskRef = doc(db, tasksRef.path, task.id);
+      const taskRef = doc(tasksRef, task.id);
       batch.delete(taskRef);
     }
     batch.delete(columnRef);
