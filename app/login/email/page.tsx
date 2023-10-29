@@ -4,7 +4,7 @@ import {
   isLogInWithEmailLink,
   logInWithEmailLink,
   sendLogInLinkToEmail,
-} from "@/../firebase/auth";
+} from "@/../services/auth";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Link from "next/link";

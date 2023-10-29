@@ -8,7 +8,7 @@ import {
   signInWithEmailLink,
   signInWithPopup,
 } from "firebase/auth";
-import { auth } from "./firebaseApp";
+import { auth } from "../firebase/config";
 
 export type UserType = User | null;
 

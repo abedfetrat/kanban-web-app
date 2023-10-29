@@ -1,4 +1,4 @@
-import { createNewBoard, editBoard } from "@/../firebase/db";
+import { createNewBoard, editBoard } from "@/../services/db";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Image from "next/image";

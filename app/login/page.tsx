@@ -6,7 +6,7 @@ import {
   logInAnonymously,
   logInWithGithHub,
   logInWithGoogle,
-} from "../../firebase/auth";
+} from "@/../services/auth";
 import { toast } from "react-hot-toast";
 
 export default function Login() {

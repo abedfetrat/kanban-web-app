@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { Board } from "../../firebase/db";
+import { Board } from "@/../services/db";
 import { useColumns } from "./providers/ColumnsProvider";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 

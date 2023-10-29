@@ -1,4 +1,4 @@
-import { Board } from "@/../firebase/db";
+import { Board } from "@/../services/db";
 import {
   ReactNode,
   createContext,

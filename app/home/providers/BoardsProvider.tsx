@@ -1,4 +1,4 @@
-import { Board, subscribeToBoardsCollection } from "@/../firebase/db";
+import { Board, subscribeToBoardsCollection } from "@/../services/db";
 import {
   ReactNode,
   createContext,
