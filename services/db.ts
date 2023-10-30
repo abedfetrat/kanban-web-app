@@ -12,7 +12,7 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
-import { auth, db } from "../firebase/config";
+import { auth, db } from "@/firebase/config";
 
 export interface Board {
   id: string;

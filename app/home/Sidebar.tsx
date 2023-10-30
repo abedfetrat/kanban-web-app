@@ -1,9 +1,9 @@
 "use client";
 
-import ThemeToggle from "@/components/ThemeToggle";
-import { THEMES, useTheme } from "@/providers/ThemeProvider";
+import ThemeToggle from "@/app/components/ThemeToggle";
+import { THEMES, useTheme } from "@/app/providers/ThemeProvider";
 import Image from "next/image";
-import { logOut } from "@/../services/auth";
+import { logOut } from "@/services/auth";
 import Boards from "./components/Boards";
 import LogOutIcon from "./components/LogOutIcon";
 import { useSidebarToggleState } from "./providers/SidebarToggleStateProvider";

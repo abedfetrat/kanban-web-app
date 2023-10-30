@@ -1,6 +1,6 @@
-import { createNewBoard, editBoard } from "@/../services/db";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
+import { createNewBoard, editBoard } from "@/services/db";
+import Button from "@/app/components/Button";
+import Input from "@/app/components/Input";
 import Image from "next/image";
 import { useEffect } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/providers/AuthProvider";
+import { useAuth } from "@/app/providers/AuthProvider";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";

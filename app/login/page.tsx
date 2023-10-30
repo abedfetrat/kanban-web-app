@@ -1,12 +1,12 @@
 "use client";
 
-import Button from "@/components/Button";
+import Button from "@/app/components/Button";
 import Link from "next/link";
 import {
   logInAnonymously,
   logInWithGithHub,
   logInWithGoogle,
-} from "@/../services/auth";
+} from "@/services/auth";
 import { toast } from "react-hot-toast";
 
 export default function Login() {

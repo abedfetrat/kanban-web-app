@@ -1,5 +1,5 @@
 import { ComponentPropsWithoutRef } from "react";
-import { Board } from "@/../services/db";
+import { Board } from "@/services/db";
 import { useBoards } from "../providers/BoardsProvider";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 

@@ -4,9 +4,9 @@ import {
   isLogInWithEmailLink,
   logInWithEmailLink,
   sendLogInLinkToEmail,
-} from "@/../services/auth";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
+} from "@/services/auth";
+import Button from "@/app/components/Button";
+import Input from "@/app/components/Input";
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";

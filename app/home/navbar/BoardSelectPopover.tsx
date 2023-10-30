@@ -1,10 +1,10 @@
 "use client";
 
 import { ComponentPropsWithoutRef } from "react";
-import ThemeToggle from "@/components/ThemeToggle";
+import ThemeToggle from "@/app/components/ThemeToggle";
 import { Popover, Transition } from "@headlessui/react";
 import Image from "next/image";
-import { logOut } from "@/../firebase/auth";
+import { logOut } from "@/services/auth";
 import Boards from "../components/Boards";
 import LogOutIcon from "../components/LogOutIcon";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";

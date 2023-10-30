@@ -1,4 +1,4 @@
-import { Column, subscribeToColumnsCollection } from "@/../services/db";
+import { Column, subscribeToColumnsCollection } from "@/services/db";
 import { Unsubscribe } from "firebase/firestore";
 import {
   ReactNode,

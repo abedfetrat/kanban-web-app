@@ -1,7 +1,7 @@
-import Button from "@/components/Button";
+import Button from "@/app/components/Button";
 import { Dialog } from "@headlessui/react";
 import toast from "react-hot-toast";
-import { deleteBoard } from "@/../services/db";
+import { deleteBoard } from "@/services/db";
 import Modal from "./components/Modal";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
