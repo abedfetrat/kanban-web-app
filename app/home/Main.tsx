@@ -1,6 +1,5 @@
 import Button from "@/app/components/Button";
-import { Board } from "@/services/db";
-import { useColumns } from "./providers/ColumnsProvider";
+import { useColumns } from "./hooks/useColumns";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
 export default function Main({
@@ -10,18 +9,20 @@ export default function Main({
   onShowAddBoardModal: () => void;
   onShowEditBoardModal: () => void;
 }) {
-  const { selectedBoard } = useSelectedBoard();
-  const { columns } = useColumns();
+  const { selectedBoard, loading: loadingBoard } = useSelectedBoard();
+  const { columns, loading: loadingColumns } = useColumns();
 
   const shouldRenderEmptyState =
     !selectedBoard || !columns || columns.length === 0;
+
+  if (loadingBoard || loadingColumns) return;
 
   return (
     <main className="grid flex-1 place-items-center px-4 pt-6 md:px-6">
       <section className="text-center">
         {shouldRenderEmptyState && (
           <EmptyState
-            selectedBoard={selectedBoard}
+            selectedBoard={!!selectedBoard}
             onShowAddBoardModal={onShowAddBoardModal}
             onShowEditBoardModal={onShowEditBoardModal}
           />
@@ -36,40 +37,24 @@ function EmptyState({
   onShowAddBoardModal,
   onShowEditBoardModal,
 }: {
-  selectedBoard: Board | null;
+  selectedBoard: boolean;
   onShowAddBoardModal: () => void;
   onShowEditBoardModal: () => void;
 }) {
-  if (!selectedBoard) {
-    return (
-      <>
-        <p className="text-lg font-bold text-medium-grey">
-          You don&rsquo;t have any boards. Create a new board to get started.
-        </p>
-        <Button
-          size="large"
-          className="mt-6"
-          color="primary"
-          onClick={onShowAddBoardModal}
-        >
-          + Create New Board
-        </Button>
-      </>
-    );
-  }
-
   return (
     <>
       <p className="text-lg font-bold text-medium-grey">
-        This board is empty. Create a new column to get started.
+        {selectedBoard
+          ? "This board is empty. Create a new column to get started."
+          : "You don’t have any boards. Create a new board to get started."}
       </p>
       <Button
         size="large"
         className="mt-6"
         color="primary"
-        onClick={onShowEditBoardModal}
+        onClick={selectedBoard ? onShowEditBoardModal : onShowAddBoardModal}
       >
-        + Add New Column
+        {selectedBoard ? "+ Add New Column" : "+ Create New Board"}
       </Button>
     </>
   );

@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef } from "react";
 import { Board } from "@/services/db";
-import { useBoards } from "../providers/BoardsProvider";
+import { useBoards } from "../hooks/useBoards";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 
 type BoardsType = ComponentPropsWithoutRef<"div"> & {
@@ -12,7 +12,7 @@ export default function Boards({
   className,
   ...props
 }: BoardsType) {
-  const { boards, loading, error } = useBoards();
+  const { boards } = useBoards();
   const { selectedBoard, selectBoard } = useSelectedBoard();
 
   return (

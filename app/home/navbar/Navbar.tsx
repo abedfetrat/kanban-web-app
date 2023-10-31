@@ -16,7 +16,7 @@ export default function Navbar({
   onShowEditBoardModal,
   onShowDeleteBoardModal,
 }: NavbarProps) {
-  const { selectedBoard } = useSelectedBoard();
+  const { selectedBoard, loading } = useSelectedBoard();
 
   return (
     <header className="flex border-light-border bg-white dark:border-dark-border dark:bg-dark-grey md:border-b-2">
@@ -36,7 +36,7 @@ export default function Navbar({
           onShowAddBoardModal={onShowAddBoardModal}
         />
         <h1 className="hidden text-xl font-bold md:block desktop:text-2xl">
-          {selectedBoard ? selectedBoard.name : "Select a board"}
+          {!loading && (selectedBoard ? selectedBoard.name : "Select a board")}
         </h1>
         <div className="flex flex-grow items-center justify-end gap-x-4">
           <AddTaskButton disabled={!selectedBoard} />

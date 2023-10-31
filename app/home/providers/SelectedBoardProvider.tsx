@@ -6,16 +6,18 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useBoards } from "./BoardsProvider";
+import { useBoards } from "../hooks/useBoards";
 
 type SelectedBoardContextType = {
   selectedBoard: Board | null;
   selectBoard: (id: string) => void;
+  loading: boolean;
 };
 
 const SelectedBoardContext = createContext<SelectedBoardContextType>({
   selectedBoard: null,
   selectBoard: () => {},
+  loading: false,
 });
 
 export default function SelectedBoardProvider({
@@ -23,18 +25,25 @@ export default function SelectedBoardProvider({
 }: {
   children: ReactNode;
 }) {
-  const { boards } = useBoards();
+  const { boards, loading: loadingBoards } = useBoards();
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
   const [selectedBoardId, setSelectedBoardId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (loadingBoards) {
+      setLoading(true);
+      return;
+    }
+
     const board = boards.find((b) => b.id === selectedBoardId);
     if (board) {
       setSelectedBoard(board);
     } else {
       setSelectedBoard(boards[0]);
     }
-  }, [selectedBoardId, boards]);
+    setLoading(false);
+  }, [selectedBoardId, boards, loadingBoards]);
 
   const selectBoard = (id: string) => {
     setSelectedBoardId(id);
@@ -45,6 +54,7 @@ export default function SelectedBoardProvider({
       value={{
         selectedBoard: selectedBoard,
         selectBoard: selectBoard,
+        loading: loading,
       }}
     >
       {children}

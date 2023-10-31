@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Modal from "./components/Modal";
-import { useColumns } from "./providers/ColumnsProvider";
+import { useColumns } from "./hooks/useColumns";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
 type AddEditBoardModalType = {
