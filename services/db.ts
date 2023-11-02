@@ -74,6 +74,28 @@ export function subscribeToColumnsCollection(
   return onSnapshot(q, obs);
 }
 
+export function subscribeToTasksCollection(
+  boardId: string,
+  columnId: string,
+  obs: (snapshot: QuerySnapshot) => void,
+) {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
+
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
+  const boardRef = doc(boardsRef, boardId);
+  const columnsRef = collection(boardRef, "columns");
+  const columnRef = doc(columnsRef, columnId);
+  const tasksRef = collection(columnRef, "tasks");
+
+  const q = query(tasksRef, orderBy("createdAt", "desc"));
+
+  return onSnapshot(q, obs);
+}
+
 export async function getColumnsForBoard(boardId: string) {
   const user = auth.currentUser;
   if (!user) {

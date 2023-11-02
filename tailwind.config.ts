@@ -26,12 +26,18 @@ const config: Config = {
         "dark-grey": "#2B2C37",
         "medium-grey": "#828FA3",
         "light-grey": "#F4F7FD",
+        cyan: "#49C4E5",
+        green: "#67E2AE",
       },
+    },
+    boxShadow: {
+      "surface-dark": "0px 4px 6px 0px rgba(54, 78, 126, 0.10)",
+      "surface-light": "0px 4px 6px 0px rgba(54, 78, 126, 0.10)",
     },
   },
   plugins: [
     require("@headlessui/tailwindcss"),
-    plugin(function ({ addVariant }) {    
+    plugin(function ({ addVariant }) {
       addVariant("hocus", ["&:hover", "&:focus"]);
     }),
   ],

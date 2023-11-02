@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AddEditBoardModal from "./AddEditBoardModal";
 import DeleteBoardModal from "./DeleteBoardModal";
-import Main from "./Main";
+import Main from "./main/Main";
 import Sidebar from "./Sidebar";
 import Navbar from "./navbar/Navbar";
 import SelectedBoardProvider from "./providers/SelectedBoardProvider";
@@ -55,7 +55,7 @@ export default function Home() {
         />
         <div className="md:flex">
           <Sidebar onShowAddBoardModal={handleShowAddBoardModal} />
-          <div className="flex h-screen flex-1 flex-col">
+          <div className="flex w-full h-screen flex-col overflow-hidden">
             <Navbar
               onShowAddBoardModal={handleShowAddBoardModal}
               onShowEditBoardModal={handleShowEditBoardModal}

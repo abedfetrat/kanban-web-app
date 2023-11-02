@@ -17,7 +17,7 @@ export default function Sidebar({
   const { showSidebar, toggleSidebar } = useSidebarToggleState();
 
   return showSidebar ? (
-    <aside className="hidden h-screen w-[262px] flex-col border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:flex desktop:w-[300px]">
+    <aside className="hidden h-screen min-w-[262px] w-[262px] flex-col border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:flex desktop:min-w-[300px] desktop:w-[300px]">
       <div className="flex h-[88px] items-center pl-6 desktop:h-[96px] desktop:pl-8">
         <Image
           src={`images/logo-${theme === THEMES.light ? "dark" : "light"}.svg`}
