@@ -1,5 +1,5 @@
-import { ComponentPropsWithoutRef, ReactNode } from "react";
 import Button from "@/app/components/Button";
+import { ComponentPropsWithoutRef } from "react";
 import { useColumns } from "../hooks/useColumns";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 import Column from "./Column";
@@ -34,6 +34,12 @@ export default function Main({
       {columns.map((col, index) => (
         <Column key={col.id} column={col} index={index} />
       ))}
+      <button
+        className="mt-[39px] grid min-w-[280px] place-items-center rounded-lg bg-gradient-to-b from-[#E9EFFA] to-[#E9EFFA]/50 text-2xl font-bold text-medium-grey outline-none hocus:text-primary dark:from-dark-grey dark:to-dark-grey/25"
+        onClick={onShowEditBoardModal}
+      >
+        + New Column
+      </button>
     </Container>
   );
 }

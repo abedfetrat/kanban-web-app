@@ -4,6 +4,7 @@ import BoardOptionsMenu from "./BoardOptionsMenu";
 import BoardSelectPopover from "./BoardSelectPopover";
 import LogoContainer from "./LogoContainer";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
+import { useColumns } from "../hooks/useColumns";
 
 type NavbarProps = {
   onShowAddBoardModal: () => void;
@@ -17,6 +18,10 @@ export default function Navbar({
   onShowDeleteBoardModal,
 }: NavbarProps) {
   const { selectedBoard, loading } = useSelectedBoard();
+  const { columns } = useColumns();
+
+  const shouldDisableAddTaskButton =
+    !selectedBoard || !columns || columns.length === 0;
 
   return (
     <header className="flex border-light-border bg-white dark:border-dark-border dark:bg-dark-grey md:border-b-2">
@@ -39,7 +44,7 @@ export default function Navbar({
           {!loading && (selectedBoard ? selectedBoard.name : "Select a board")}
         </h1>
         <div className="flex flex-grow items-center justify-end gap-x-4">
-          <AddTaskButton disabled={!selectedBoard} />
+          <AddTaskButton disabled={shouldDisableAddTaskButton} />
           {selectedBoard && (
             <BoardOptionsMenu
               onShowEditBoardModal={onShowEditBoardModal}
