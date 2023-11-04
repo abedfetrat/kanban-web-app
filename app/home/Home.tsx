@@ -1,11 +1,18 @@
 import { useState } from "react";
 import AddEditBoardModal from "./AddEditBoardModal";
+import AddEditTaskModal from "./AddEditTaskModal";
 import DeleteBoardModal from "./DeleteBoardModal";
-import Main from "./main/Main";
 import Sidebar from "./Sidebar";
+import Main from "./main/Main";
 import Navbar from "./navbar/Navbar";
 import SelectedBoardProvider from "./providers/SelectedBoardProvider";
 import SidebarToggleStateProvider from "./providers/SidebarToggleStateProvider";
+import { ModeType } from "./components/Modal";
+
+type AddEditModalState = {
+  mode: ModeType;
+  open: boolean;
+};
 
 export default function Home() {
   const [shouldShowAddBoardModal, setShouldShowAddBoardModal] = useState(false);
@@ -13,6 +20,11 @@ export default function Home() {
     useState(false);
   const [shouldShowDeleteBoardModal, setShouldShowDeleteBoardModal] =
     useState(false);
+  const [addEditTaskModalState, setAddEditTaskModalState] =
+    useState<AddEditModalState>({
+      mode: "add",
+      open: false,
+    });
 
   // Toggle Add Board Modal
   const handleShowAddBoardModal = () => {
@@ -35,6 +47,13 @@ export default function Home() {
   const handleCloseDeleteBoardModal = () => {
     setShouldShowDeleteBoardModal(false);
   };
+  // Toggle Add/Edit Task Modal
+  const handleShowAddEditTaskModal = (mode: ModeType) => {
+    setAddEditTaskModalState({ mode: mode, open: true });
+  };
+  const handleCloseAddEditTaskModal = () => {
+    setAddEditTaskModalState({ mode: "add", open: false });
+  };
 
   return (
     <SidebarToggleStateProvider>
@@ -53,13 +72,19 @@ export default function Home() {
           isOpen={shouldShowDeleteBoardModal}
           onClose={handleCloseDeleteBoardModal}
         />
+        <AddEditTaskModal
+          mode={addEditTaskModalState.mode}
+          isOpen={addEditTaskModalState.open}
+          onClose={handleCloseAddEditTaskModal}
+        />
         <div className="md:flex">
           <Sidebar onShowAddBoardModal={handleShowAddBoardModal} />
-          <div className="flex w-full h-screen flex-col overflow-hidden">
+          <div className="flex h-screen w-full flex-col overflow-hidden">
             <Navbar
               onShowAddBoardModal={handleShowAddBoardModal}
               onShowEditBoardModal={handleShowEditBoardModal}
               onShowDeleteBoardModal={handleShowDeleteBoardModal}
+              onShowAddEditTaskModal={handleShowAddEditTaskModal}
             />
             <Main
               onShowAddBoardModal={handleShowAddBoardModal}

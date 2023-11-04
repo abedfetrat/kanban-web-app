@@ -5,17 +5,20 @@ import BoardSelectPopover from "./BoardSelectPopover";
 import LogoContainer from "./LogoContainer";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 import { useColumns } from "../hooks/useColumns";
+import { ModeType } from "../components/Modal";
 
 type NavbarProps = {
   onShowAddBoardModal: () => void;
   onShowEditBoardModal: () => void;
   onShowDeleteBoardModal: () => void;
+  onShowAddEditTaskModal: (mode: ModeType) => void;
 };
 
 export default function Navbar({
   onShowAddBoardModal,
   onShowEditBoardModal,
   onShowDeleteBoardModal,
+  onShowAddEditTaskModal,
 }: NavbarProps) {
   const { selectedBoard, loading } = useSelectedBoard();
   const { columns } = useColumns();
@@ -44,7 +47,10 @@ export default function Navbar({
           {!loading && (selectedBoard ? selectedBoard.name : "Select a board")}
         </h1>
         <div className="flex flex-grow items-center justify-end gap-x-4">
-          <AddTaskButton disabled={shouldDisableAddTaskButton} />
+          <AddTaskButton
+            disabled={shouldDisableAddTaskButton}
+            onClick={() => onShowAddEditTaskModal("add")}
+          />
           {selectedBoard && (
             <BoardOptionsMenu
               onShowEditBoardModal={onShowEditBoardModal}

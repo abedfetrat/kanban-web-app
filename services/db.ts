@@ -154,6 +154,8 @@ export async function getTasksForColumn(boardId: string, columnId: string) {
   return tasks;
 }
 
+/* BOARDS CRUD */
+
 export async function createNewBoard(name: string, columns: string[]) {
   const user = auth.currentUser;
   if (!user) {
@@ -260,6 +262,45 @@ export async function deleteBoard(boardId: string) {
   return batch.commit();
 }
 
+/* TASKS CRUD */
+
+export function createNewTask(
+  boardId: string,
+  columnId: string,
+  taskData: { name: string; description: string; subtasks: string[] },
+) {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
+
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
+  const boardRef = doc(boardsRef, boardId);
+  const columnsRef = collection(boardRef, "columns");
+  const columnRef = doc(columnsRef, columnId);
+  const tasksRef = collection(columnRef, "tasks");
+  const taskRef = doc(tasksRef);
+
+  const subtasks: Record<string, Omit<Subtask, "id">> = {};
+  taskData.subtasks.forEach((name) => {
+    const id = doc(tasksRef).id;
+    subtasks[id] = {
+      name: name.trim(),
+      completed: false,
+      createdAt: serverTimestamp(),
+    };
+  });
+
+  return setDoc(taskRef, {
+    id: taskRef.id,
+    name: taskData.name.trim(),
+    createdAt: serverTimestamp(),
+    description: taskData.description.trim(),
+    subtasks: subtasks,
+  });
+}
+
 /* Helper functions */
 
 function compareColumns(oldColumns: Column[], newColumns: Column[]) {
@@ -291,4 +332,13 @@ function compareColumns(oldColumns: Column[], newColumns: Column[]) {
   });
 
   return { added, updated, deleted };
+}
+
+export function convertSubtasksMapToArray(
+  map: Record<string, Omit<Subtask, "id">>,
+): any {
+  return Object.entries(map).map(([key, value]) => ({
+    ...(value as Subtask),
+    id: key,
+  }));
 }

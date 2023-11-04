@@ -1,10 +1,16 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { ComponentPropsWithoutRef, Fragment } from "react";
 
-type ModalType = ComponentPropsWithoutRef<"div"> & {
+export type ModeType = "add" | "edit";
+
+export type BaseModalType = ComponentPropsWithoutRef<"div"> & {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+};
+
+export type AddEditModalType = BaseModalType & {
+  mode: ModeType;
 };
 
 export default function Modal({
@@ -13,7 +19,7 @@ export default function Modal({
   title,
   children,
   ...props
-}: ModalType) {
+}: BaseModalType) {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog

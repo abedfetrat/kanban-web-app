@@ -1,18 +1,14 @@
 "use client";
 
+import { ComponentPropsWithoutRef } from "react";
 import Button from "@/app/components/Button";
 import Image from "next/image";
 
-export default function AddTaskButton({ disabled }: { disabled: boolean }) {
+export default function AddTaskButton(
+  props: ComponentPropsWithoutRef<"button">,
+) {
   return (
-    <Button
-      size="variable"
-      color="primary"
-      disabled={disabled}
-      onClick={() => {
-        console.log("Opening new task modal...");
-      }}
-    >
+    <Button {...props} size="variable" color="primary">
       <Image
         src="/images/icon-add-task-mobile.svg"
         width={12}

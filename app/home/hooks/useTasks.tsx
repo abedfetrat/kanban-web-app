@@ -1,4 +1,8 @@
-import { Task, subscribeToTasksCollection } from "@/services/db";
+import {
+  Task,
+  convertSubtasksMapToArray,
+  subscribeToTasksCollection,
+} from "@/services/db";
 import { useEffect, useState } from "react";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 
@@ -25,12 +29,13 @@ export function useTasks(columnId: string) {
             const _tasks: Task[] = [];
             snapshot.forEach((doc) => {
               const data = doc.data();
+              const subtasks = convertSubtasksMapToArray(data.subtasks);
               _tasks.push({
                 id: data.id,
                 name: data.name,
                 createdAt: data.createdAt,
                 description: data.description,
-                subtasks: data.subtasks,
+                subtasks: subtasks,
               });
             });
             setTasks(_tasks);

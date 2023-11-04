@@ -35,7 +35,7 @@ export default function Main({
         <Column key={col.id} column={col} index={index} />
       ))}
       <button
-        className="mt-[39px] grid min-w-[280px] place-items-center rounded-lg bg-gradient-to-b from-[#E9EFFA] to-[#E9EFFA]/50 text-2xl font-bold text-medium-grey outline-none hocus:text-primary dark:from-dark-grey dark:to-dark-grey/25"
+        className="transition-colors mt-[39px] grid min-w-[280px] place-items-center rounded-lg bg-gradient-to-b from-[#E9EFFA] to-[#E9EFFA]/50 text-2xl font-bold text-medium-grey outline-none hocus:text-primary dark:from-dark-grey dark:to-dark-grey/25"
         onClick={onShowEditBoardModal}
       >
         + New Column
