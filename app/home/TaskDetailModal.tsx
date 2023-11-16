@@ -1,3 +1,4 @@
+import Modal, { BaseModalType } from "@/app/components/Modal";
 import {
   Column,
   Subtask,
@@ -6,32 +7,42 @@ import {
   updateSubtaskCompletion,
 } from "@/services/db";
 import { Dialog } from "@headlessui/react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import Dropdown from "../components/Dropdown";
 import TaskOptionsMenu from "./TaskOptionsMenu";
-import Modal, { BaseModalType } from "@/app/components/Modal";
 import { useColumns } from "./hooks/useColumns";
+import { useTasks } from "./hooks/useTasks";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
 type TaskDetailModalType = BaseModalType & {
-  task: Task;
+  taskId: string;
   column: Column;
 };
 
 function TaskDetailModal({
   isOpen,
   onClose,
-  task,
+  taskId,
   column,
 }: TaskDetailModalType): React.ReactElement {
-  const numCompletedSubtasks = useMemo(
-    () => task.subtasks.filter((t) => t.completed).length,
-    [task],
-  );
-
-  const { columns } = useColumns();
   const { selectedBoard } = useSelectedBoard();
+  const { columns } = useColumns();
+  const { tasks } = useTasks(column.id);
+  const [task, setTask] = useState<Task>({} as Task);
+  const numCompletedSubtasks = useMemo(() => {
+    if (task && task.subtasks) {
+      return task.subtasks.filter((t) => t.completed).length;
+    }
+    return 0;
+  }, [task]);
+
+  useEffect(() => {
+    const foundTask = tasks.find((t) => t.id === taskId);
+    if (foundTask) {
+      setTask(foundTask);
+    }
+  }, [tasks, taskId]);
 
   const handleSubtaskCompletionChange = async (
     subtaskId: string,
@@ -41,13 +52,13 @@ function TaskDetailModal({
       await updateSubtaskCompletion(
         selectedBoard!.id,
         column.id,
-        task.id,
+        taskId,
         subtaskId,
         completed,
       );
     } catch (error) {
       console.log(error);
-      toast.error("Could not change completion.");
+      toast.error("Could not change completion");
     }
   };
 
@@ -55,7 +66,7 @@ function TaskDetailModal({
     if (newColumn.id === column.id) return;
 
     try {
-      await changeTaskColumn(task, selectedBoard!.id, column.id, newColumn.id);
+      await changeTaskColumn(task!, selectedBoard!.id, column.id, newColumn.id);
       onClose();
     } catch (error) {
       console.log(error);

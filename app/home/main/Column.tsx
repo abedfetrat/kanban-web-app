@@ -56,7 +56,7 @@ function Task({ task, column }: { task: Task; column: Column }) {
   return (
     <li>
       <button
-        onClick={() => openModal(TaskDetailModal, { column, task })}
+        onClick={() => openModal(TaskDetailModal, { column, taskId: task.id })}
         className="w-full rounded-lg bg-white px-4 py-6 text-start shadow-surface-light outline-none hocus:text-primary dark:bg-dark-grey dark:shadow-surface-dark"
       >
         <h4 className="font-bold transition-colors">{task.name}</h4>
