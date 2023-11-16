@@ -1,6 +1,8 @@
 import { Column, Task } from "@/services/db";
-import { useTasks } from "../hooks/useTasks";
 import { useMemo } from "react";
+import TaskDetailModal from "../TaskDetailModal";
+import { useTasks } from "../hooks/useTasks";
+import { useModalState } from "@/app/hooks/useModalState";
 
 /* TODO: improve keyboard support */
 
@@ -35,14 +37,16 @@ export default function Column({
       {/* Tasks */}
       <ul className="mt-6 flex flex-col gap-y-5">
         {tasks.map((task) => (
-          <Task key={task.id} task={task} />
+          <Task key={task.id} task={task} column={column} />
         ))}
       </ul>
     </div>
   );
 }
 
-function Task({ task }: { task: Task }) {
+function Task({ task, column }: { task: Task; column: Column }) {
+  const { isModalOpen, openModal, closeModal } = useModalState();
+
   const numCompletedSubtasks = useMemo(
     () => task.subtasks.filter((t) => t.completed).length,
     [task],
@@ -50,13 +54,24 @@ function Task({ task }: { task: Task }) {
   const numSubtasks = task.subtasks.length;
 
   return (
-    <li>
-      <button className="shadow-surface-light dark:shadow-surface-dark w-full rounded-lg bg-white px-4 py-6 text-start outline-none hocus:text-primary dark:bg-dark-grey">
-        <h4 className="font-bold transition-colors">{task.name}</h4>
-        <p className="mt-2 text-xs font-bold text-medium-grey">
-          {numCompletedSubtasks} of {numSubtasks} subtasks
-        </p>
-      </button>
-    </li>
+    <>
+      <TaskDetailModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        column={column}
+        task={task}
+      />
+      <li>
+        <button
+          onClick={openModal}
+          className="w-full rounded-lg bg-white px-4 py-6 text-start shadow-surface-light outline-none hocus:text-primary dark:bg-dark-grey dark:shadow-surface-dark"
+        >
+          <h4 className="font-bold transition-colors">{task.name}</h4>
+          <p className="mt-2 text-xs font-bold text-medium-grey">
+            {numCompletedSubtasks} of {numSubtasks} subtasks
+          </p>
+        </button>
+      </li>
+    </>
   );
 }

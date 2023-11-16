@@ -37,6 +37,7 @@ const config: Config = {
   },
   plugins: [
     require("@headlessui/tailwindcss"),
+    require('@tailwindcss/forms'),
     plugin(function ({ addVariant }) {
       addVariant("hocus", ["&:hover", "&:focus"]);
     }),

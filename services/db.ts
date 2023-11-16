@@ -1,3 +1,4 @@
+import { auth, db } from "@/firebase/config";
 import {
   FieldValue,
   QuerySnapshot,
@@ -12,7 +13,6 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
-import { auth, db } from "@/firebase/config";
 
 export interface Board {
   id: string;
@@ -301,6 +301,66 @@ export function createNewTask(
   });
 }
 
+export function updateSubtaskCompletion(
+  boardId: string,
+  columnId: string,
+  taskId: string,
+  subtaskId: string,
+  completed: boolean,
+) {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
+
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
+  const boardRef = doc(boardsRef, boardId);
+  const columnsRef = collection(boardRef, "columns");
+  const columnRef = doc(columnsRef, columnId);
+  const tasksRef = collection(columnRef, "tasks");
+  const taskRef = doc(tasksRef, taskId);
+
+  return updateDoc(taskRef, {
+    [`subtasks.${subtaskId}.completed`]: completed,
+  });
+}
+
+export async function changeTaskColumn(
+  task: Task,
+  boardId: string,
+  oldColumnId: string,
+  newColumnId: string,
+) {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
+
+  const userRef = doc(db, "users", user.uid);
+  const boardsRef = collection(userRef, "boards");
+  const boardRef = doc(boardsRef, boardId);
+  const columnsRef = collection(boardRef, "columns");
+
+  const oldColumnRef = doc(columnsRef, oldColumnId);
+  const oldTasksRef = collection(oldColumnRef, "tasks");
+  const oldTaskRef = doc(oldTasksRef, task.id);
+
+  const newColumnRef = doc(columnsRef, newColumnId);
+  const newTasksRef = collection(newColumnRef, "tasks");
+  const newTaskRef = doc(newTasksRef);
+
+  const batch = writeBatch(db);
+  batch.set(newTaskRef, {
+    ...task,
+    id: newTaskRef.id,
+    subtasks: convertSubtasksArrayToMap(task.subtasks),
+  });
+  batch.delete(oldTaskRef);
+
+  return batch.commit();
+}
+
 /* Helper functions */
 
 function compareColumns(oldColumns: Column[], newColumns: Column[]) {
@@ -341,4 +401,12 @@ export function convertSubtasksMapToArray(
     ...(value as Subtask),
     id: key,
   }));
+}
+
+function convertSubtasksArrayToMap(array: Subtask[]) {
+  const map: Record<string, Subtask> = {};
+  array.forEach((value) => {
+    map[value.id] = value;
+  });
+  return map;
 }
