@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import toast from "react-hot-toast";
 import Dropdown from "../components/Dropdown";
 import TaskOptionsMenu from "./TaskOptionsMenu";
-import Modal, { BaseModalType } from "./components/Modal";
+import Modal, { BaseModalType } from "@/app/components/Modal";
 import { useColumns } from "./hooks/useColumns";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 

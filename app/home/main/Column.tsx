@@ -1,8 +1,8 @@
+import { useModal } from "@/app/providers/ModalProvider";
 import { Column, Task } from "@/services/db";
 import { useMemo } from "react";
 import TaskDetailModal from "../TaskDetailModal";
 import { useTasks } from "../hooks/useTasks";
-import { useModalState } from "@/app/hooks/useModalState";
 
 /* TODO: improve keyboard support */
 
@@ -45,7 +45,7 @@ export default function Column({
 }
 
 function Task({ task, column }: { task: Task; column: Column }) {
-  const { isModalOpen, openModal, closeModal } = useModalState();
+  const { openModal } = useModal();
 
   const numCompletedSubtasks = useMemo(
     () => task.subtasks.filter((t) => t.completed).length,
@@ -54,24 +54,16 @@ function Task({ task, column }: { task: Task; column: Column }) {
   const numSubtasks = task.subtasks.length;
 
   return (
-    <>
-      <TaskDetailModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        column={column}
-        task={task}
-      />
-      <li>
-        <button
-          onClick={openModal}
-          className="w-full rounded-lg bg-white px-4 py-6 text-start shadow-surface-light outline-none hocus:text-primary dark:bg-dark-grey dark:shadow-surface-dark"
-        >
-          <h4 className="font-bold transition-colors">{task.name}</h4>
-          <p className="mt-2 text-xs font-bold text-medium-grey">
-            {numCompletedSubtasks} of {numSubtasks} subtasks
-          </p>
-        </button>
-      </li>
-    </>
+    <li>
+      <button
+        onClick={() => openModal(TaskDetailModal, { column, task })}
+        className="w-full rounded-lg bg-white px-4 py-6 text-start shadow-surface-light outline-none hocus:text-primary dark:bg-dark-grey dark:shadow-surface-dark"
+      >
+        <h4 className="font-bold transition-colors">{task.name}</h4>
+        <p className="mt-2 text-xs font-bold text-medium-grey">
+          {numCompletedSubtasks} of {numSubtasks} subtasks
+        </p>
+      </button>
+    </li>
   );
 }

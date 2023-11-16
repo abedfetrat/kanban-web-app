@@ -2,22 +2,18 @@
 
 import ThemeToggle from "@/app/components/ThemeToggle";
 import { THEMES, useTheme } from "@/app/providers/ThemeProvider";
-import Image from "next/image";
 import { logOut } from "@/services/auth";
+import Image from "next/image";
 import Boards from "./components/Boards";
 import LogOutIcon from "./components/LogOutIcon";
 import { useSidebarToggleState } from "./providers/SidebarToggleStateProvider";
 
-export default function Sidebar({
-  onShowAddBoardModal,
-}: {
-  onShowAddBoardModal: () => void;
-}) {
+export default function Sidebar() {
   const { theme, toggleTheme } = useTheme();
   const { showSidebar, toggleSidebar } = useSidebarToggleState();
 
   return showSidebar ? (
-    <aside className="hidden h-screen min-w-[262px] w-[262px] flex-col border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:flex desktop:min-w-[300px] desktop:w-[300px]">
+    <aside className="hidden h-screen w-[262px] min-w-[262px] flex-col border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:flex desktop:w-[300px] desktop:min-w-[300px]">
       <div className="flex h-[88px] items-center pl-6 desktop:h-[96px] desktop:pl-8">
         <Image
           src={`images/logo-${theme === THEMES.light ? "dark" : "light"}.svg`}
@@ -26,7 +22,7 @@ export default function Sidebar({
           alt="kanban logo"
         />
       </div>
-      <Boards className="flex-1 overflow-y-auto pb-8 pt-4 desktop:pt-0" onShowAddBoardModal={onShowAddBoardModal} />
+      <Boards className="flex-1 overflow-y-auto pb-8 pt-4 desktop:pt-0" />
       <div className="px-6">
         <ThemeToggle />
       </div>

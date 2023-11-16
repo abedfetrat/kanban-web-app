@@ -1,25 +1,15 @@
+import { useModal } from "@/app/providers/ModalProvider";
 import Image from "next/image";
+import AddEditTaskModal from "../AddEditTaskModal";
+import { useColumns } from "../hooks/useColumns";
+import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 import AddTaskButton from "./AddTaskButton";
 import BoardOptionsMenu from "./BoardOptionsMenu";
 import BoardSelectPopover from "./BoardSelectPopover";
 import LogoContainer from "./LogoContainer";
-import { useSelectedBoard } from "../providers/SelectedBoardProvider";
-import { useColumns } from "../hooks/useColumns";
-import { ModeType } from "../components/Modal";
 
-type NavbarProps = {
-  onShowAddBoardModal: () => void;
-  onShowEditBoardModal: () => void;
-  onShowDeleteBoardModal: () => void;
-  onShowAddEditTaskModal: (mode: ModeType) => void;
-};
-
-export default function Navbar({
-  onShowAddBoardModal,
-  onShowEditBoardModal,
-  onShowDeleteBoardModal,
-  onShowAddEditTaskModal,
-}: NavbarProps) {
+export default function Navbar() {
+  const { openModal } = useModal();
   const { selectedBoard, loading } = useSelectedBoard();
   const { columns } = useColumns();
 
@@ -39,24 +29,16 @@ export default function Navbar({
             className="min-w-[24px]"
           />
         </div>
-        <BoardSelectPopover
-          className="md:hidden"
-          onShowAddBoardModal={onShowAddBoardModal}
-        />
+        <BoardSelectPopover className="md:hidden" />
         <h1 className="hidden text-xl font-bold md:block desktop:text-2xl">
           {!loading && (selectedBoard ? selectedBoard.name : "Select a board")}
         </h1>
         <div className="flex flex-grow items-center justify-end gap-x-4">
           <AddTaskButton
             disabled={shouldDisableAddTaskButton}
-            onClick={() => onShowAddEditTaskModal("add")}
+            onClick={() => openModal(AddEditTaskModal, { mode: "add" })}
           />
-          {selectedBoard && (
-            <BoardOptionsMenu
-              onShowEditBoardModal={onShowEditBoardModal}
-              onShowDeleteBoardModal={onShowDeleteBoardModal}
-            />
-          )}
+          {selectedBoard && <BoardOptionsMenu />}
         </div>
       </div>
     </header>

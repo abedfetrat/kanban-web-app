@@ -10,9 +10,9 @@ import {
   useWatch,
 } from "react-hook-form";
 import toast from "react-hot-toast";
-import TextArea from "../components/TextArea";
+import TextArea from "@/app/components/TextArea";
 import ColumnPicker from "./components/ColumnPicker";
-import Modal, { AddEditModalType } from "./components/Modal";
+import Modal, { AddEditModalType } from "@/app/components/Modal";
 import { useColumns } from "./hooks/useColumns";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 

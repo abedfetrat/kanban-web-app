@@ -1,22 +1,17 @@
-import { ComponentPropsWithoutRef } from "react";
+import { useModal } from "@/app/providers/ModalProvider";
 import { Board } from "@/services/db";
+import { ComponentPropsWithoutRef } from "react";
+import AddEditBoardModal from "../AddEditBoardModal";
 import { useBoards } from "../hooks/useBoards";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 
-type BoardsType = ComponentPropsWithoutRef<"div"> & {
-  onShowAddBoardModal: () => void;
-};
-
-export default function Boards({
-  onShowAddBoardModal,
-  className,
-  ...props
-}: BoardsType) {
+export default function Boards(props: ComponentPropsWithoutRef<"div">) {
   const { boards } = useBoards();
   const { selectedBoard, selectBoard } = useSelectedBoard();
+  const { openModal } = useModal();
 
   return (
-    <div className={`font-bold text-medium-grey ${className}`} {...props}>
+    <div className={`font-bold text-medium-grey ${props.className}`} {...props}>
       <div className="px-6 py-4 text-sm uppercase tracking-[2.4px]">
         All Boards ({boards.length})
       </div>
@@ -32,7 +27,7 @@ export default function Boards({
         <li>
           <button
             className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold text-primary transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
-            onClick={onShowAddBoardModal}
+            onClick={() => openModal(AddEditBoardModal, { mode: "add" })}
           >
             <BoardIcon />
             <span>+ Create New Board</span>

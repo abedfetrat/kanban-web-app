@@ -1,18 +1,15 @@
 import Button from "@/app/components/Button";
+import { useModal } from "@/app/providers/ModalProvider";
 import { ComponentPropsWithoutRef } from "react";
+import AddEditBoardModal from "../AddEditBoardModal";
 import { useColumns } from "../hooks/useColumns";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 import Column from "./Column";
 
-export default function Main({
-  onShowAddBoardModal,
-  onShowEditBoardModal,
-}: {
-  onShowAddBoardModal: () => void;
-  onShowEditBoardModal: () => void;
-}) {
+export default function Main() {
   const { selectedBoard, loading: loadingBoard } = useSelectedBoard();
   const { columns, loading: loadingColumns } = useColumns();
+  const { openModal } = useModal();
 
   const shouldRenderEmptyState =
     !selectedBoard || !columns || columns.length === 0;
@@ -20,13 +17,7 @@ export default function Main({
   if (loadingBoard || loadingColumns) return;
 
   if (shouldRenderEmptyState) {
-    return (
-      <EmptyState
-        selectedBoard={!!selectedBoard}
-        onShowAddBoardModal={onShowAddBoardModal}
-        onShowEditBoardModal={onShowEditBoardModal}
-      />
-    );
+    return <EmptyState selectedBoard={!!selectedBoard} />;
   }
 
   return (
@@ -35,8 +26,8 @@ export default function Main({
         <Column key={col.id} column={col} index={index} />
       ))}
       <button
-        className="transition-colors mt-[39px] grid min-w-[280px] place-items-center rounded-lg bg-gradient-to-b from-[#E9EFFA] to-[#E9EFFA]/50 text-2xl font-bold text-medium-grey outline-none hocus:text-primary dark:from-dark-grey dark:to-dark-grey/25"
-        onClick={onShowEditBoardModal}
+        className="mt-[39px] grid min-w-[280px] place-items-center rounded-lg bg-gradient-to-b from-[#E9EFFA] to-[#E9EFFA]/50 text-2xl font-bold text-medium-grey outline-none transition-colors hocus:text-primary dark:from-dark-grey dark:to-dark-grey/25"
+        onClick={() => openModal(AddEditBoardModal, { mode: "edit" })}
       >
         + New Column
       </button>
@@ -54,15 +45,9 @@ function Container({ className, children }: ComponentPropsWithoutRef<"main">) {
   );
 }
 
-function EmptyState({
-  selectedBoard,
-  onShowAddBoardModal,
-  onShowEditBoardModal,
-}: {
-  selectedBoard: boolean;
-  onShowAddBoardModal: () => void;
-  onShowEditBoardModal: () => void;
-}) {
+function EmptyState({ selectedBoard }: { selectedBoard: boolean }) {
+  const { openModal } = useModal();
+
   return (
     <Container className="grid place-items-center">
       <section className="text-center">
@@ -75,7 +60,11 @@ function EmptyState({
           size="large"
           className="mt-6"
           color="primary"
-          onClick={selectedBoard ? onShowEditBoardModal : onShowAddBoardModal}
+          onClick={() =>
+            openModal(AddEditBoardModal, {
+              mode: selectedBoard ? "edit" : "add",
+            })
+          }
         >
           {selectedBoard ? "+ Add New Column" : "+ Create New Board"}
         </Button>

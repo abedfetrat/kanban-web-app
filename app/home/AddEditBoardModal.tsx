@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import Modal from "./components/Modal";
+import Modal from "@/app/components/Modal";
 import { useColumns } from "./hooks/useColumns";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 

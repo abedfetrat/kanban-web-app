@@ -1,17 +1,11 @@
 import Button from "@/app/components/Button";
+import Modal, { BaseModalType } from "@/app/components/Modal";
+import { deleteBoard } from "@/services/db";
 import { Dialog } from "@headlessui/react";
 import toast from "react-hot-toast";
-import { deleteBoard } from "@/services/db";
-import Modal from "./components/Modal";
 import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 
-export default function DeleteBoardModal({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
+export default function DeleteBoardModal({ isOpen, onClose }: BaseModalType) {
   const { selectedBoard } = useSelectedBoard();
 
   const handleDelete = () => {
