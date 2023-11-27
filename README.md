@@ -1,13 +1,14 @@
 # Kanban Task Management
 
-Authentication page
 ![](screenshots/login.png)
+Authentication page
 
-Home page
 ![](screenshots/home.jpg)
+Home page
 
 Task management app where users can create, update, read and delete boards and tasks.
 This was a challenge from [Frontend Mentor](https://www.frontendmentor.io/).
+Work in progress.
 
 [Live Demo](https://kanban-web-app-eta.vercel.app/) 
 
